@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Jeans - Find Your Perfect Fit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --denim-dark: #1a2332;
+            --denim-blue: #2d4263;
+            --denim-medium: #4a6fa5;
+            --denim-light: #7fa3d1;
+            --stitch-gold: #d4a574;
+            --white: #f8f9fa;
+            --off-white: #e8e9ea;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, var(--denim-dark) 0%, var(--denim-blue) 50%, var(--denim-medium) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Denim texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Stitching pattern */
+        .stitch-pattern {
+            position: fixed;
+            top: 50%;
+            left: -10%;
+            width: 120%;
+            height: 400px;
+            transform: translateY(-50%) rotate(-5deg);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+        }
+
+        .stitch-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--stitch-gold) 0px,
+                var(--stitch-gold) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            animation: stitchMove 20s linear infinite;
+        }
+
+        .stitch-line:nth-child(1) { top: 0; }
+        .stitch-line:nth-child(2) { top: 50%; }
+        .stitch-line:nth-child(3) { bottom: 0; }
+
+        @keyframes stitchMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(20px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 60px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cowboy-figure,
+        .cowgirl-figure {
+            width: 120px;
+            height: 160px;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .cowboy-figure {
+            animation-delay: 0.2s;
+        }
+
+        .cowgirl-figure {
+            animation-delay: 0.4s;
+        }
+
+        /* Clint Eastwood-style cowboy */
+        .cowboy-figure svg,
+        .cowgirl-figure svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.4));
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            background: linear-gradient(180deg, var(--white) 0%, var(--denim-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--stitch-gold);
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .calculator-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .result-section {
+            position: sticky;
+            top: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .result-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .result-section::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .result-section::-webkit-scrollbar-thumb {
+            background: var(--stitch-gold);
+            border-radius: 10px;
+        }
+
+        /* Decorative rivet */
+        .calculator-section::before,
+        .calculator-section::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--stitch-gold);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .calculator-section::before {
+            top: 20px;
+            left: 20px;
+        }
+
+        .calculator-section::after {
+            top: 20px;
+            right: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-row-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .form-group-compact {
+            margin-bottom: 15px;
+        }
+
+        .form-row-two-col .form-group-compact {
+            margin-bottom: 0;
+        }
+
+        .form-group-compact label {
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .form-group-compact input {
+            padding: 10px;
+            font-size: 1.1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            color: var(--stitch-gold);
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 165, 116, 0.4);
+            border-radius: 8px;
+            color: var(--white);
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--stitch-gold);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(212, 165, 116, 0.3);
+        }
+
+        input[type="number"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .unit-toggle {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .unit-btn {
+            flex: 1;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 6px;
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .unit-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .unit-btn.active {
+            background: var(--stitch-gold);
+            color: var(--denim-dark);
+            border-color: var(--stitch-gold);
+        }
+
+        .waist-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .waist-options-horizontal {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .waist-btn {
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 10px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .waist-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+            border-color: rgba(212, 165, 116, 0.5);
+        }
+
+        .waist-btn.active {
+            background: var(--stitch-gold);
+            color: var(--denim-dark);
+            border-color: var(--stitch-gold);
+        }
+
+        .waist-btn-compact {
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 6px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .waist-btn-compact:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(212, 165, 116, 0.5);
+        }
+
+        .waist-btn-compact.active {
+            background: var(--stitch-gold);
+            color: var(--denim-dark);
+            border-color: var(--stitch-gold);
+        }
+
+        .waist-label {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .waist-desc {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .waist-btn.active .waist-desc {
+            opacity: 0.9;
+        }
+
+        .break-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .break-btn {
+            padding: 8px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 10px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .break-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(212, 165, 116, 0.5);
+        }
+
+        .break-btn.active {
+            background: rgba(212, 165, 116, 0.2);
+            border-color: var(--stitch-gold);
+            box-shadow: 0 0 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .break-illustration {
+            width: 100%;
+            max-width: 90px;
+            height: 100px;
+            margin-bottom: 3px;
+            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.4));
+        }
+
+        .break-label-compact {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .break-desc-compact {
+            font-size: 0.65rem;
+            line-height: 1.2;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        .break-btn.active .break-desc-compact {
+            opacity: 0.9;
+        }
+
+        .break-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .break-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .break-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .break-btn.active .break-desc {
+            opacity: 0.95;
+        }
+
+        .waist-size-note {
+            margin-top: 8px;
+        }
+
+        .waist-size-note small {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .measurement-note {
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(212, 165, 116, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--stitch-gold);
+        }
+
+        .measurement-note small {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .color-btn {
+            padding: 14px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .color-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(212, 165, 116, 0.5);
+        }
+
+        .color-btn.active {
+            background: rgba(212, 165, 116, 0.2);
+            border-color: var(--stitch-gold);
+            box-shadow: 0 0 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .product-links {
+            margin-top: 25px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            border-left: 4px solid var(--stitch-gold);
+        }
+
+        .product-links h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: var(--stitch-gold);
+        }
+
+        .product-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .product-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--stitch-gold);
+            transform: translateX(5px);
+        }
+
+        .product-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .brand-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--stitch-gold);
+        }
+
+        .product-specs {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .link-arrow {
+            font-size: 1.5rem;
+            color: var(--stitch-gold);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            max-width: 100%;
+        }
+
+        .size-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px 15px;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .size-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--stitch-gold), var(--denim-light));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .size-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--stitch-gold);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .size-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .country-flag {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .size-card h3 {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: var(--off-white);
+        }
+
+        .size-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--stitch-gold);
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .size-detail {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.3;
+        }
+
+        .disclaimer {
+            margin-top: 60px;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .disclaimer p {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--stitch-gold) 0%, #c49461 100%);
+            border: none;
+            border-radius: 12px;
+            color: var(--denim-dark);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+            font-family: 'Bebas Neue', sans-serif;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.5);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result-section {
+            text-align: center;
+        }
+
+        .result-display {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 60px 40px;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .ruler-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--stitch-gold);
+            margin: 20px 0;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .result-label {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--off-white);
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .size-guide {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(212, 165, 116, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--stitch-gold);
+            position: relative;
+            z-index: 1;
+        }
+
+        .size-guide h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: var(--stitch-gold);
+        }
+
+        .size-guide p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--off-white);
+        }
+
+        .features {
+            margin-top: 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 35px;
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--stitch-gold);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: var(--stitch-gold);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--off-white);
+            font-weight: 300;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .calculator-section {
+                padding: 35px;
+            }
+
+            h1 {
+                letter-spacing: 4px;
+            }
+
+            .logo-container {
+                gap: 20px;
+            }
+
+            .cowboy-figure,
+            .cowgirl-figure {
+                width: 90px;
+                height: 120px;
+            }
+
+            .break-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row-two-col {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .form-row-two-col .form-group-compact {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .calculator-section {
+                padding: 25px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .cowboy-figure,
+            .cowgirl-figure {
+                width: 70px;
+                height: 95px;
+            }
+
+            .logo-container {
+                gap: 15px;
+            }
+
+            .disclaimer {
+                padding: 15px 10px;
+            }
+
+            .disclaimer p {
+                font-size: 0.75rem;
+            }
+
+            .break-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .break-label-compact {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stitch-pattern">
+        <div class="stitch-line"></div>
+        <div class="stitch-line"></div>
+        <div class="stitch-line"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <!-- Clint Eastwood-style Cowboy -->
+                <div class="cowboy-figure">
+                    <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hat -->
+                        <ellipse cx="50" cy="25" rx="35" ry="8" fill="#3d2817"/>
+                        <path d="M 20 25 Q 50 15 80 25 L 75 30 Q 50 22 25 30 Z" fill="#5a3d2b"/>
+                        <rect x="35" y="25" width="30" height="15" rx="2" fill="#4a3426"/>
+                        
+                        <!-- Head -->
+                        <ellipse cx="50" cy="50" rx="18" ry="20" fill="#d4a574"/>
+                        
+                        <!-- Signature squint -->
+                        <line x1="42" y1="48" x2="48" y2="48" stroke="#2d1810" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="52" y1="48" x2="58" y2="48" stroke="#2d1810" stroke-width="2" stroke-linecap="round"/>
+                        
+                        <!-- Stubble -->
+                        <ellipse cx="50" cy="58" rx="12" ry="6" fill="#8b6f47" opacity="0.3"/>
+                        
+                        <!-- Cigar -->
+                        <rect x="58" y="56" width="15" height="3" rx="1.5" fill="#654321"/>
+                        <rect x="58" y="56" width="3" height="3" fill="#ff6347" opacity="0.7"/>
+                        
+                        <!-- Poncho/Serape -->
+                        <path d="M 35 65 L 30 110 L 40 110 L 50 75 L 60 110 L 70 110 L 65 65 Z" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <rect x="35" y="70" width="30" height="3" fill="#d4a574"/>
+                        <rect x="35" y="80" width="30" height="3" fill="#d4a574"/>
+                        
+                        <!-- Jeans -->
+                        <rect x="38" y="110" width="10" height="25" fill="#2d4263"/>
+                        <rect x="52" y="110" width="10" height="25" fill="#2d4263"/>
+                        
+                        <!-- Boots -->
+                        <ellipse cx="43" cy="138" rx="6" ry="4" fill="#3d2817"/>
+                        <ellipse cx="57" cy="138" rx="6" ry="4" fill="#3d2817"/>
+                        <rect x="37" y="130" width="12" height="10" fill="#5a3d2b"/>
+                        <rect x="51" y="130" width="12" height="10" fill="#5a3d2b"/>
+                    </svg>
+                </div>
+
+                <div class="logo-text">
+                    <h1>GREAT JEANS</h1>
+                    <p class="tagline">Find Your Perfect Fit</p>
+                </div>
+
+                <!-- Sydney Sweeney-style Cowgirl -->
+                <div class="cowgirl-figure">
+                    <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cowgirl Hat -->
+                        <ellipse cx="50" cy="22" rx="32" ry="7" fill="#d4a574"/>
+                        <path d="M 22 22 Q 50 12 78 22 L 74 27 Q 50 18 26 27 Z" fill="#e8c9a0"/>
+                        <rect x="37" y="22" width="26" height="14" rx="2" fill="#d4a574"/>
+                        <rect x="45" y="24" width="10" height="3" fill="#8b4513"/>
+                        
+                        <!-- Blonde Hair -->
+                        <path d="M 35 35 Q 30 50 32 65 L 38 65 Q 36 50 38 35 Z" fill="#f4d03f"/>
+                        <path d="M 65 35 Q 70 50 68 65 L 62 65 Q 64 50 62 35 Z" fill="#f4d03f"/>
+                        
+                        <!-- Head -->
+                        <ellipse cx="50" cy="48" rx="16" ry="18" fill="#ffd4a3"/>
+                        
+                        <!-- Eyes (bright and expressive) -->
+                        <circle cx="44" cy="46" r="2.5" fill="#4a90e2"/>
+                        <circle cx="56" cy="46" r="2.5" fill="#4a90e2"/>
+                        <circle cx="44.5" cy="45.5" r="1" fill="white"/>
+                        <circle cx="56.5" cy="45.5" r="1" fill="white"/>
+                        
+                        <!-- Smile -->
+                        <path d="M 42 54 Q 50 58 58 54" stroke="#ff6b9d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        
+                        <!-- Western Shirt -->
+                        <path d="M 36 65 L 32 90 L 40 90 L 42 65 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+                        <path d="M 64 65 L 68 90 L 60 90 L 58 65 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+                        <rect x="42" y="65" width="16" height="25" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+                        
+                        <!-- Western shirt details -->
+                        <circle cx="48" cy="72" r="1.5" fill="#f4d03f"/>
+                        <circle cx="48" cy="80" r="1.5" fill="#f4d03f"/>
+                        <circle cx="52" cy="72" r="1.5" fill="#f4d03f"/>
+                        <circle cx="52" cy="80" r="1.5" fill="#f4d03f"/>
+                        
+                        <!-- Belt -->
+                        <rect x="35" y="90" width="30" height="4" fill="#654321"/>
+                        <rect x="48" y="90" width="4" height="4" fill="#d4a574"/>
+                        
+                        <!-- High-waisted Jeans -->
+                        <rect x="38" y="94" width="11" height="32" fill="#4a6fa5"/>
+                        <rect x="51" y="94" width="11" height="32" fill="#4a6fa5"/>
+                        <line x1="43.5" y1="94" x2="43.5" y2="126" stroke="#7fa3d1" stroke-width="1"/>
+                        <line x1="56.5" y1="94" x2="56.5" y2="126" stroke="#7fa3d1" stroke-width="1"/>
+                        
+                        <!-- Cowgirl Boots -->
+                        <ellipse cx="43.5" cy="138" rx="6" ry="4" fill="#8b4513"/>
+                        <ellipse cx="56.5" cy="138" rx="6" ry="4" fill="#8b4513"/>
+                        <rect x="37.5" y="126" width="12" height="12" fill="#a0522d"/>
+                        <rect x="50.5" y="126" width="12" height="12" fill="#a0522d"/>
+                        <path d="M 40 130 L 43 128 L 46 130" stroke="#d4a574" stroke-width="1" fill="none"/>
+                        <path d="M 53 130 L 56 128 L 59 130" stroke="#d4a574" stroke-width="1" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="calculator-section">
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <div class="unit-toggle">
+                        <button class="unit-btn active" data-gender="male">Male</button>
+                        <button class="unit-btn" data-gender="female">Female</button>
+                        <button class="unit-btn" data-gender="unisex">Unisex</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="waist-style">Waist Style</label>
+                    <div class="waist-options-horizontal">
+                        <button class="waist-btn-compact active" data-waist="low">
+                            <span class="waist-label">Low</span>
+                        </button>
+                        <button class="waist-btn-compact" data-waist="mid">
+                            <span class="waist-label">Mid</span>
+                        </button>
+                        <button class="waist-btn-compact" data-waist="high">
+                            <span class="waist-label">High</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="break-style">Hem Break Style</label>
+                    <div class="break-options">
+                        <button class="break-btn" data-break="cropped">
+                            <svg class="break-illustration" viewBox="0 0 80 140" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="denimBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#3d5a7a;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#2d4263;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#1e3550;stop-opacity:1" />
+                                    </linearGradient>
+                                    <radialGradient id="shoeShine" cx="50%" cy="40%">
+                                        <stop offset="0%" style="stop-color:#8b6f47;stop-opacity:0.5" />
+                                        <stop offset="100%" style="stop-color:#3d2817;stop-opacity:0" />
+                                    </radialGradient>
+                                </defs>
+                                
+                                <!-- Left leg -->
+                                <rect x="15" y="0" width="22" height="70" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="26" y1="0" x2="26" y2="70" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                
+                                <!-- Right leg -->
+                                <rect x="43" y="0" width="22" height="70" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="54" y1="0" x2="54" y2="70" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                
+                                <!-- Hem detail left -->
+                                <rect x="15" y="68" width="22" height="2" fill="#1a2840"/>
+                                <line x1="16" y1="69" x2="36" y2="69" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Hem detail right -->
+                                <rect x="43" y="68" width="22" height="2" fill="#1a2840"/>
+                                <line x1="44" y1="69" x2="64" y2="69" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Gap showing ankle -->
+                                <ellipse cx="26" cy="85" rx="11" ry="8" fill="#e8bc96"/>
+                                <ellipse cx="54" cy="85" rx="11" ry="8" fill="#e8bc96"/>
+                                
+                                <!-- Left shoe -->
+                                <ellipse cx="26" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="26" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="26" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="26" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 13 115 Q 26 100 39 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                                
+                                <!-- Right shoe -->
+                                <ellipse cx="54" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="54" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="54" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="54" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 41 115 Q 54 100 67 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                            </svg>
+                            <span class="break-label-compact">Cropped</span>
+                            <span class="break-desc-compact">Shows ankle<br/>Fashion forward</span>
+                        </button>
+                        
+                        <button class="break-btn" data-break="no-break">
+                            <svg class="break-illustration" viewBox="0 0 80 140" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Left leg -->
+                                <rect x="15" y="0" width="22" height="100" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="26" y1="0" x2="26" y2="100" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                
+                                <!-- Right leg -->
+                                <rect x="43" y="0" width="22" height="100" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="54" y1="0" x2="54" y2="100" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                
+                                <!-- Hem detail left (just touching shoe) -->
+                                <rect x="15" y="98" width="22" height="2" fill="#1a2840"/>
+                                <line x1="16" y1="99" x2="36" y2="99" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Hem detail right -->
+                                <rect x="43" y="98" width="22" height="2" fill="#1a2840"/>
+                                <line x1="44" y1="99" x2="64" y2="99" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Left shoe -->
+                                <ellipse cx="26" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="26" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="26" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="26" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 13 115 Q 26 100 39 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                                
+                                <!-- Right shoe -->
+                                <ellipse cx="54" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="54" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="54" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="54" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 41 115 Q 54 100 67 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                            </svg>
+                            <span class="break-label-compact">No Break</span>
+                            <span class="break-desc-compact">Just touches<br/>Clean & modern</span>
+                        </button>
+                        
+                        <button class="break-btn active" data-break="slight">
+                            <svg class="break-illustration" viewBox="0 0 80 140" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Left leg with slight break -->
+                                <rect x="15" y="0" width="22" height="98" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="26" y1="0" x2="26" y2="98" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                <!-- ONE small horizontal wrinkle -->
+                                <line x1="16" y1="97" x2="36" y2="97" stroke="#1a2840" stroke-width="1.5" opacity="0.8"/>
+                                <rect x="15" y="98" width="22" height="3" fill="url(#denimBlue)" rx="1" opacity="0.95"/>
+                                
+                                <!-- Right leg with slight break -->
+                                <rect x="43" y="0" width="22" height="98" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="54" y1="0" x2="54" y2="98" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                <!-- ONE small horizontal wrinkle -->
+                                <line x1="44" y1="97" x2="64" y2="97" stroke="#1a2840" stroke-width="1.5" opacity="0.8"/>
+                                <rect x="43" y="98" width="22" height="3" fill="url(#denimBlue)" rx="1" opacity="0.95"/>
+                                
+                                <!-- Hem detail left -->
+                                <rect x="15" y="101" width="22" height="2" fill="#1a2840"/>
+                                <line x1="16" y1="102" x2="36" y2="102" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Hem detail right -->
+                                <rect x="43" y="101" width="22" height="2" fill="#1a2840"/>
+                                <line x1="44" y1="102" x2="64" y2="102" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Left shoe -->
+                                <ellipse cx="26" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="26" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="26" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="26" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 13 115 Q 26 100 39 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                                
+                                <!-- Right shoe -->
+                                <ellipse cx="54" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="54" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="54" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="54" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 41 115 Q 54 100 67 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                            </svg>
+                            <span class="break-label-compact">Slight Break</span>
+                            <span class="break-desc-compact">Tiny fold<br/>Classic & popular</span>
+                        </button>
+                        
+                        <button class="break-btn" data-break="full">
+                            <svg class="break-illustration" viewBox="0 0 80 140" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Left leg with full break/stacking - MUCH MORE VISIBLE -->
+                                <rect x="15" y="0" width="22" height="88" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="26" y1="0" x2="26" y2="88" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                
+                                <!-- MULTIPLE clear horizontal wrinkles/stacks with fabric bunching -->
+                                <line x1="16" y1="90" x2="36" y2="90" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="15" y="90" width="22" height="3" fill="#1e3550" opacity="0.7"/>
+                                
+                                <line x1="16" y1="94" x2="36" y2="94" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="15" y="94" width="22" height="3" fill="#1e3550" opacity="0.7"/>
+                                
+                                <line x1="16" y1="98" x2="36" y2="98" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="15" y="98" width="22" height="3" fill="#1e3550" opacity="0.7"/>
+                                
+                                <line x1="16" y1="102" x2="36" y2="102" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="15" y="102" width="22" height="4" fill="url(#denimBlue)" rx="1" opacity="0.8"/>
+                                
+                                <!-- Right leg with full break -->
+                                <rect x="43" y="0" width="22" height="88" fill="url(#denimBlue)" rx="1"/>
+                                <line x1="54" y1="0" x2="54" y2="88" stroke="#4a6fa5" stroke-width="0.5" opacity="0.4"/>
+                                
+                                <!-- MULTIPLE clear horizontal wrinkles/stacks with fabric bunching -->
+                                <line x1="44" y1="90" x2="64" y2="90" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="43" y="90" width="22" height="3" fill="#1e3550" opacity="0.7"/>
+                                
+                                <line x1="44" y1="94" x2="64" y2="94" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="43" y="94" width="22" height="3" fill="#1e3550" opacity="0.7"/>
+                                
+                                <line x1="44" y1="98" x2="64" y2="98" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="43" y="98" width="22" height="3" fill="#1e3550" opacity="0.7"/>
+                                
+                                <line x1="44" y1="102" x2="64" y2="102" stroke="#0d1820" stroke-width="2" opacity="0.9"/>
+                                <rect x="43" y="102" width="22" height="4" fill="url(#denimBlue)" rx="1" opacity="0.8"/>
+                                
+                                <!-- Hem detail left (lower than slight break) -->
+                                <rect x="15" y="106" width="22" height="2" fill="#1a2840"/>
+                                <line x1="16" y1="107" x2="36" y2="107" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Hem detail right -->
+                                <rect x="43" y="106" width="22" height="2" fill="#1a2840"/>
+                                <line x1="44" y1="107" x2="64" y2="107" stroke="#d4a574" stroke-width="0.5" stroke-dasharray="1,1"/>
+                                
+                                <!-- Left shoe -->
+                                <ellipse cx="26" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="26" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="26" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="26" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 13 115 Q 26 100 39 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                                
+                                <!-- Right shoe -->
+                                <ellipse cx="54" cy="130" rx="14" ry="8" fill="#2d1f12" opacity="0.2"/>
+                                <ellipse cx="54" cy="115" rx="13" ry="16" fill="#5a3d2b"/>
+                                <ellipse cx="54" cy="112" rx="12" ry="14" fill="#6b4a33"/>
+                                <ellipse cx="54" cy="108" rx="10" ry="8" fill="url(#shoeShine)"/>
+                                <path d="M 41 115 Q 54 100 67 115" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+                            </svg>
+                            <span class="break-label-compact">Full Break</span>
+                            <span class="break-desc-compact">Fabric stacks<br/>Relaxed fit</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="measurement-type">What Are You Measuring?</label>
+                    <div class="unit-toggle">
+                        <button class="unit-btn active" data-measurement="height">
+                            <span style="font-size: 1.2rem;">👤</span> My Height
+                        </button>
+                        <button class="unit-btn" data-measurement="jeans">
+                            <span style="font-size: 1.2rem;">👖</span> My Jeans
+                        </button>
+                    </div>
+                    <div class="measurement-note">
+                        <small id="measurement-help">We'll calculate your ideal jeans length based on your height</small>
+                    </div>
+                </div>
+
+                <div class="form-row-two-col">
+                    <div class="form-group form-group-compact">
+                        <label for="height" id="height-label">Your Height</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="height" placeholder="Enter your height" min="0" step="0.1">
+                        </div>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" data-unit="cm">CM</button>
+                            <button class="unit-btn" data-unit="inches">IN</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-compact">
+                        <label for="waist-size">Waist Size (inches)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="waist-size" placeholder="e.g., 32" min="20" max="60" step="1">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateInseam()">Find My Perfect Jeans</button>
+            </div>
+
+            <div class="result-section">
+                <div class="result-display" id="resultDisplay">
+                    <div class="ruler-icon">📏</div>
+                    <p class="result-label">Enter your height to see your perfect inseam</p>
+                </div>
+                
+                <div id="international-sizes" style="display: none; margin-top: 30px; animation: fadeInUp 0.5s ease-out;">
+                    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; text-align: center; margin-bottom: 25px; color: var(--stitch-gold);">International Sizing</h2>
+                    <div class="size-grid">
+                        <div class="size-card">
+                            <div class="country-flag">🇬🇧</div>
+                            <h3>UK</h3>
+                            <div class="size-value" id="uk-size">--</div>
+                            <div class="size-detail" id="uk-detail"></div>
+                        </div>
+                        <div class="size-card">
+                            <div class="country-flag">🇺🇸</div>
+                            <h3>US</h3>
+                            <div class="size-value" id="us-size">--</div>
+                            <div class="size-detail" id="us-detail"></div>
+                        </div>
+                        <div class="size-card">
+                            <div class="country-flag">🇪🇺</div>
+                            <h3>EU</h3>
+                            <div class="size-value" id="eu-size">--</div>
+                            <div class="size-detail" id="eu-detail"></div>
+                        </div>
+                        <div class="size-card">
+                            <div class="country-flag">🇮🇹</div>
+                            <h3>Italy</h3>
+                            <div class="size-value" id="it-size">--</div>
+                            <div class="size-detail" id="it-detail"></div>
+                        </div>
+                        <div class="size-card">
+                            <div class="country-flag">🇯🇵</div>
+                            <h3>Japan</h3>
+                            <div class="size-value" id="jp-size">--</div>
+                            <div class="size-detail" id="jp-detail"></div>
+                        </div>
+                        <div class="size-card">
+                            <div class="country-flag">🇮🇳</div>
+                            <h3>India</h3>
+                            <div class="size-value" id="in-size">--</div>
+                            <div class="size-detail" id="in-detail"></div>
+                        </div>
+                        <div class="size-card">
+                            <div class="country-flag">🇷🇺</div>
+                            <h3>Russia</h3>
+                            <div class="size-value" id="ru-size">--</div>
+                            <div class="size-detail" id="ru-detail"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🛍️</div>
+                <h3>Shop Your Size</h3>
+                <p>Get instant shopping links to major UK retailers with your exact measurements already filtered for easy shopping.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📏</div>
+                <h3>Precise Calculations</h3>
+                <p>Our algorithm factors in gender, waist style, and break preference to calculate your ideal inseam with professional accuracy.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Global Sizing</h3>
+                <p>See your size in 7 different international standards—UK, US, EU, Italian, Japanese, Indian, and Russian formats.</p>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <p>* Sizing recommendations are for guidance only. Measurements may vary between brands. Always check individual brand size charts before purchasing.</p>
+        </div>
+    </div>
+
+    <script>
+        let currentUnit = 'cm';
+        let currentGender = 'male';
+        let currentWaist = 'low';
+        let measurementType = 'height';
+        let breakStyle = 'slight'; // Default to slight break (most popular)
+
+        // Measurement type toggle functionality
+        document.querySelectorAll('[data-measurement]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-measurement]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                measurementType = this.dataset.measurement;
+                
+                const heightLabel = document.getElementById('height-label');
+                const heightInput = document.getElementById('height');
+                const measurementHelp = document.getElementById('measurement-help');
+                
+                if (measurementType === 'height') {
+                    heightLabel.textContent = 'Your Height';
+                    heightInput.placeholder = currentUnit === 'cm' ? 'Enter your height' : 'Enter your height';
+                    measurementHelp.textContent = "We'll calculate your ideal jeans length based on your height";
+                } else {
+                    heightLabel.textContent = 'Jeans Inseam Length';
+                    heightInput.placeholder = currentUnit === 'cm' ? 'Enter inseam length' : 'Enter inseam length';
+                    measurementHelp.textContent = "We'll recommend your height range based on this jeans measurement";
+                }
+                
+                // Clear the input when switching measurement types
+                heightInput.value = '';
+            });
+        });
+
+        // Gender toggle functionality
+        document.querySelectorAll('[data-gender]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-gender]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentGender = this.dataset.gender;
+            });
+        });
+
+        // Waist style toggle functionality
+        document.querySelectorAll('[data-waist]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-waist]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentWaist = this.dataset.waist;
+            });
+        });
+
+        // Break style toggle functionality
+        document.querySelectorAll('[data-break]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-break]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                breakStyle = this.dataset.break;
+            });
+        });
+
+        // Unit toggle functionality
+        document.querySelectorAll('[data-unit]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const siblings = this.parentElement.querySelectorAll('[data-unit]');
+                siblings.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const newUnit = this.dataset.unit;
+                const heightInput = document.getElementById('height');
+                
+                if (heightInput.value && newUnit !== currentUnit) {
+                    const currentValue = parseFloat(heightInput.value);
+                    if (newUnit === 'cm') {
+                        heightInput.value = (currentValue * 2.54).toFixed(1);
+                    } else {
+                        heightInput.value = (currentValue / 2.54).toFixed(1);
+                    }
+                }
+                
+                currentUnit = newUnit;
+                
+                if (measurementType === 'height') {
+                    heightInput.placeholder = currentUnit === 'cm' ? 'e.g., 175' : 'e.g., 69';
+                } else {
+                    heightInput.placeholder = currentUnit === 'cm' ? 'e.g., 81' : 'e.g., 32';
+                }
+            });
+        });
+
+        function calculateInseam() {
+            const heightInput = document.getElementById('height');
+            const waistSizeInput = document.getElementById('waist-size');
+            const inputValue = parseFloat(heightInput.value);
+            const waistSize = parseInt(waistSizeInput.value);
+            
+            if (!inputValue || inputValue <= 0) {
+                const fieldName = measurementType === 'height' ? 'height' : 'inseam length';
+                showResult(`Please enter a valid ${fieldName}`, '', '', null);
+                return;
+            }
+
+            if (!waistSize || waistSize <= 0) {
+                showResult('Please enter your waist size', '', '', null);
+                return;
+            }
+
+            if (measurementType === 'height') {
+                // Original calculation: Height to Inseam
+                calculateFromHeight(inputValue, waistSize);
+            } else {
+                // Reverse calculation: Inseam to Height
+                calculateFromInseam(inputValue, waistSize);
+            }
+        }
+
+        function calculateFromHeight(height, waistSize) {
+            // Convert to cm if needed
+            const heightInCm = currentUnit === 'inches' ? height * 2.54 : height;
+            
+            // Base inseam ratio varies by gender
+            let baseRatio;
+            if (currentGender === 'male') {
+                baseRatio = 0.47;
+            } else if (currentGender === 'female') {
+                baseRatio = 0.44;
+            } else {
+                baseRatio = 0.455;
+            }
+            
+            // Adjust for waist style
+            let waistAdjustment = 0;
+            if (currentWaist === 'low') {
+                waistAdjustment = 2.5;
+            } else if (currentWaist === 'high') {
+                waistAdjustment = -1.5;
+            }
+            
+            // Calculate base inseam
+            let inseamCm = heightInCm * baseRatio;
+            let inseamInches = inseamCm / 2.54;
+            
+            // Apply waist adjustment
+            inseamInches += waistAdjustment;
+            
+            // Apply break style adjustment
+            // Break style affects how long the jeans should be
+            let breakAdjustment = 0;
+            switch(breakStyle) {
+                case 'cropped':
+                    breakAdjustment = -2.5; // Subtract 2.5" for cropped (shows ankle)
+                    break;
+                case 'no-break':
+                    breakAdjustment = -0.5; // Slightly shorter (just touches shoe)
+                    break;
+                case 'slight':
+                    breakAdjustment = 0; // Standard length (tiny fold)
+                    break;
+                case 'full':
+                    breakAdjustment = 1.5; // Add 1.5" for full break (fabric stacks)
+                    break;
+            }
+            
+            inseamInches += breakAdjustment;
+            inseamCm = inseamInches * 2.54;
+            
+            // Determine size category
+            let sizeGuide = getSizeGuide(inseamInches, currentGender);
+
+            const displayValue = currentUnit === 'cm' 
+                ? `${Math.round(inseamCm)} cm`
+                : `${Math.round(inseamInches)}"`;
+
+            const waistStyleText = currentWaist.charAt(0).toUpperCase() + currentWaist.slice(1) + ' Waist';
+            const genderText = currentGender.charAt(0).toUpperCase() + currentGender.slice(1);
+            
+            // Get break style description
+            const breakStyleText = getBreakStyleText(breakStyle);
+
+            // Generate product links
+            const productLinks = generateProductLinks(waistSize, Math.round(inseamInches), currentGender);
+
+            showResult(displayValue, `${genderText} • ${waistStyleText} • ${breakStyleText}`, sizeGuide, productLinks);
+            
+            // Update international sizes
+            updateInternationalSizes(waistSize, Math.round(inseamInches), currentGender);
+        }
+
+        function getBreakStyleText(style) {
+            switch(style) {
+                case 'cropped': return 'Cropped';
+                case 'no-break': return 'No Break';
+                case 'slight': return 'Slight Break';
+                case 'full': return 'Full Break';
+                default: return 'Slight Break';
+            }
+        }
+
+        function calculateFromInseam(inseamInput, waistSize) {
+            // Convert to inches if needed
+            const inseamInches = currentUnit === 'cm' ? inseamInput / 2.54 : inseamInput;
+            
+            // Reverse the break style adjustment to find the "standard" inseam
+            let breakAdjustment = 0;
+            switch(breakStyle) {
+                case 'cropped':
+                    breakAdjustment = -2.5;
+                    break;
+                case 'no-break':
+                    breakAdjustment = -0.5;
+                    break;
+                case 'slight':
+                    breakAdjustment = 0;
+                    break;
+                case 'full':
+                    breakAdjustment = 1.5;
+                    break;
+            }
+            
+            let adjustedInseam = inseamInches - breakAdjustment;
+            
+            // Reverse adjust for waist style
+            if (currentWaist === 'low') {
+                adjustedInseam -= 2.5;
+            } else if (currentWaist === 'high') {
+                adjustedInseam += 1.5;
+            }
+            
+            // Base ratio varies by gender
+            let baseRatio;
+            if (currentGender === 'male') {
+                baseRatio = 0.47;
+            } else if (currentGender === 'female') {
+                baseRatio = 0.44;
+            } else {
+                baseRatio = 0.455;
+            }
+            
+            // Calculate height from inseam
+            const heightInches = adjustedInseam / baseRatio;
+            const heightCm = heightInches * 2.54;
+            
+            const displayValue = currentUnit === 'cm' 
+                ? `${Math.round(heightCm)} cm`
+                : `${Math.round(heightInches)}"`;
+                
+            const heightFt = Math.floor(heightInches / 12);
+            const heightIn = Math.round(heightInches % 12);
+            
+            const waistStyleText = currentWaist.charAt(0).toUpperCase() + currentWaist.slice(1) + ' Waist';
+            const genderText = currentGender.charAt(0).toUpperCase() + currentGender.slice(1);
+            const breakStyleText = getBreakStyleText(breakStyle);
+            
+            const sizeGuide = `These jeans with a ${Math.round(inseamInches)}" inseam and ${breakStyleText.toLowerCase()} styling are ideal for someone around ${heightFt}'${heightIn}" (${Math.round(heightCm)}cm) tall wearing ${waistStyleText.toLowerCase()}. The ${breakStyleText.toLowerCase()} will ${getBreakDescription(breakStyle)}`;
+            
+            // Generate product links with the actual inseam from the jeans
+            const productLinks = generateProductLinks(waistSize, Math.round(inseamInches), currentGender);
+
+            showResult(displayValue, `${genderText} • ${waistStyleText} • ${breakStyleText}`, sizeGuide, productLinks);
+            
+            // Update international sizes
+            updateInternationalSizes(waistSize, Math.round(inseamInches), currentGender);
+        }
+
+        function getBreakDescription(style) {
+            switch(style) {
+                case 'cropped': return 'show your ankle for a fashion-forward look';
+                case 'no-break': return 'just touch the top of your shoe for a clean, modern appearance';
+                case 'slight': return 'create a tiny fold at the front for a classic look';
+                case 'full': return 'stack the fabric for a relaxed, streetwear vibe';
+                default: return 'create a tiny fold at the front for a classic look';
+            }
+        }
+
+        function getSizeGuide(inseamInches, gender) {
+            if (gender === 'male' || gender === 'unisex') {
+                if (inseamInches < 28) {
+                    return 'Extra Short (XS) - 26-27" inseam • Great for: Cropped styles, shorter builds';
+                } else if (inseamInches < 30) {
+                    return 'Short (S) - 28-29" inseam • Great for: Heights 5\'2"-5\'6"';
+                } else if (inseamInches < 32) {
+                    return 'Regular (R) - 30-31" inseam • Great for: Heights 5\'7"-5\'11"';
+                } else if (inseamInches < 34) {
+                    return 'Long (L) - 32-33" inseam • Great for: Heights 6\'0"-6\'2"';
+                } else {
+                    return 'Extra Long (XL) - 34"+ inseam • Great for: Heights 6\'3"+';
+                }
+            } else {
+                if (inseamInches < 27) {
+                    return 'Petite Short - 25-26" inseam • Great for: Heights under 5\'2"';
+                } else if (inseamInches < 29) {
+                    return 'Petite/Short - 27-28" inseam • Great for: Heights 5\'2"-5\'4"';
+                } else if (inseamInches < 31) {
+                    return 'Regular - 29-30" inseam • Great for: Heights 5\'5"-5\'7"';
+                } else if (inseamInches < 33) {
+                    return 'Tall - 31-32" inseam • Great for: Heights 5\'8"-5\'11"';
+                } else {
+                    return 'Extra Tall - 33"+ inseam • Great for: Heights 6\'0"+';
+                }
+            }
+        }
+
+        function generateProductLinks(waist, inseam, gender) {
+            // UK-based shopping links (user is in London, England)
+            const genderQuery = gender === 'male' ? 'mens' : gender === 'female' ? 'womens' : '';
+            
+            const links = [];
+
+            // Levi's UK
+            links.push({
+                brand: "Levi's",
+                specs: `${waist}W ${inseam}L`,
+                url: `https://www.levi.com/GB/en_GB/search?q=${genderQuery}+jeans+${waist}+${inseam}`.replace(/\s+/g, '+')
+            });
+
+            // ASOS UK
+            links.push({
+                brand: "ASOS",
+                specs: `${waist}W ${inseam}L`,
+                url: `https://www.asos.com/search/?q=${genderQuery}+jeans+${waist}w+${inseam}l`.replace(/\s+/g, '+')
+            });
+
+            // Next UK
+            links.push({
+                brand: "Next",
+                specs: `${waist}W ${inseam}L`,
+                url: `https://www.next.co.uk/search?w=${genderQuery}+jeans+${waist}+waist+${inseam}+leg`.replace(/\s+/g, '+')
+            });
+
+            // Marks & Spencer UK
+            links.push({
+                brand: "M&S",
+                specs: `${waist}W ${inseam}L`,
+                url: `https://www.marksandspencer.com/s?q=${genderQuery}+jeans+${waist}+${inseam}`.replace(/\s+/g, '+')
+            });
+
+            // Uniqlo UK
+            links.push({
+                brand: "Uniqlo",
+                specs: `${waist}W ${inseam}L`,
+                url: `https://www.uniqlo.com/uk/en/search?q=${genderQuery}+jeans&quickView=false`.replace(/\s+/g, '+')
+            });
+
+            // John Lewis UK
+            links.push({
+                brand: "John Lewis",
+                specs: `${waist}W ${inseam}L`,
+                url: `https://www.johnlewis.com/search?search-term=${genderQuery}+jeans+${waist}+${inseam}`.replace(/\s+/g, '+')
+            });
+
+            console.log('Generated product links:', links); // Debug logging
+            return links;
+        }
+
+        function showResult(value, label, guide, productLinks) {
+            const resultDisplay = document.getElementById('resultDisplay');
+            
+            if (guide && productLinks) {
+                let linksHTML = '<div class="product-links"><h3>Shop Your Size in the UK</h3>';
+                productLinks.forEach(link => {
+                    linksHTML += `
+                        <a href="${link.url}" class="product-link" target="_blank" rel="noopener noreferrer">
+                            <div class="brand-info">
+                                <span class="brand-name">${link.brand}</span>
+                                <span class="product-specs">${link.specs}</span>
+                            </div>
+                            <span class="link-arrow">→</span>
+                        </a>
+                    `;
+                });
+                linksHTML += '</div>';
+
+                const resultLabel = measurementType === 'height' ? 'Recommended Inseam' : 'Recommended Height';
+
+                resultDisplay.innerHTML = `
+                    <div class="result-value">${value}</div>
+                    <p class="result-label">${resultLabel} • ${label}</p>
+                    <div class="size-guide">
+                        <h3>${measurementType === 'height' ? 'Size Recommendation' : 'Height Match'}</h3>
+                        <p>${guide}</p>
+                    </div>
+                    ${linksHTML}
+                `;
+                
+                // Show international sizes section
+                document.getElementById('international-sizes').style.display = 'block';
+            } else if (guide) {
+                resultDisplay.innerHTML = `
+                    <div class="result-value">${value}</div>
+                    <p class="result-label">${label}</p>
+                    <div class="size-guide">
+                        <h3>Size Recommendation</h3>
+                        <p>${guide}</p>
+                    </div>
+                `;
+            } else {
+                resultDisplay.innerHTML = `
+                    <div class="ruler-icon">⚠️</div>
+                    <p class="result-label">${value}</p>
+                `;
+                // Hide international sizes section on error
+                document.getElementById('international-sizes').style.display = 'none';
+            }
+        }
+
+        function updateInternationalSizes(waistInches, inseamInches, gender) {
+            const waistCm = Math.round(waistInches * 2.54);
+            const inseamCm = Math.round(inseamInches * 2.54);
+            
+            // UK Sizing (uses dress/trouser sizes: 6, 8, 10, 12, 14, 16, 18, etc.)
+            let ukSize;
+            if (gender === 'male') {
+                // Men's UK trouser sizes: typically 28, 30, 32, 34, 36, 38, 40, 42 (waist in inches)
+                ukSize = Math.round(waistInches / 2) * 2; // Round to nearest even number
+                document.getElementById('uk-size').textContent = ukSize;
+                document.getElementById('uk-detail').textContent = `${ukSize}" waist, ${inseamInches}" leg (S/R/L)`;
+            } else {
+                // Women's UK dress sizes: 6, 8, 10, 12, 14, 16, 18, 20
+                // Correct conversion: waist 25" = size 6, 27" = 8, 29" = 10, 31" = 12, 33" = 14, 35" = 16
+                // Formula: approximately (waist - 21) for sizes
+                if (waistInches <= 25) ukSize = 6;
+                else if (waistInches <= 27) ukSize = 8;
+                else if (waistInches <= 29) ukSize = 10;
+                else if (waistInches <= 31) ukSize = 12;
+                else if (waistInches <= 33) ukSize = 14;
+                else if (waistInches <= 35) ukSize = 16;
+                else if (waistInches <= 37) ukSize = 18;
+                else if (waistInches <= 39) ukSize = 20;
+                else ukSize = 22;
+                
+                document.getElementById('uk-size').textContent = ukSize;
+                document.getElementById('uk-detail').textContent = `Size ${ukSize} (${waistInches}" waist)`;
+            }
+
+            // US Sizing (uses different standards for men and women)
+            let usSize;
+            if (gender === 'male') {
+                // Men's US: waist x inseam format (same as inches)
+                usSize = `${waistInches}×${inseamInches}`;
+                document.getElementById('us-size').textContent = usSize;
+                document.getElementById('us-detail').textContent = `${waistInches}" waist × ${inseamInches}" inseam`;
+            } else {
+                // Women's US dress sizes: 0, 2, 4, 6, 8, 10, 12, 14, 16
+                // Conversion: waist 25" = size 2, 26" = 4, 27" = 6, 28" = 8, 29" = 10, 30" = 12, etc.
+                if (waistInches <= 24) usSize = 0;
+                else if (waistInches <= 25) usSize = 2;
+                else if (waistInches <= 26) usSize = 4;
+                else if (waistInches <= 27) usSize = 6;
+                else if (waistInches <= 28) usSize = 8;
+                else if (waistInches <= 29) usSize = 10;
+                else if (waistInches <= 30) usSize = 12;
+                else if (waistInches <= 32) usSize = 14;
+                else if (waistInches <= 34) usSize = 16;
+                else usSize = 18;
+                
+                document.getElementById('us-size').textContent = usSize;
+                document.getElementById('us-detail').textContent = `Size ${usSize} (${waistInches}" waist)`;
+            }
+
+            // European Sizing (numeric size system based on waist circumference in cm divided by 2)
+            let euSize;
+            if (gender === 'male') {
+                // Men's EU: waist in cm divided by 2 (e.g., 92cm = 46)
+                euSize = Math.round(waistCm / 2);
+                document.getElementById('eu-size').textContent = euSize;
+                document.getElementById('eu-detail').textContent = `Taille ${euSize} (${waistCm}cm taille)`;
+            } else {
+                // Women's EU dress sizes: 32, 34, 36, 38, 40, 42, 44, 46
+                // Conversion from UK: UK 6 = EU 34, UK 8 = EU 36, etc.
+                euSize = ukSize + 28;
+                document.getElementById('eu-size').textContent = euSize;
+                document.getElementById('eu-detail').textContent = `Taille ${euSize} (${waistCm}cm taille)`;
+            }
+
+            // Italian Sizing (uses own dress size system)
+            let itSize;
+            if (gender === 'male') {
+                // Men's Italian: similar to EU (44, 46, 48, 50, 52, 54)
+                itSize = Math.round(waistCm / 2);
+                document.getElementById('it-size').textContent = itSize;
+                document.getElementById('it-detail').textContent = `Taglia ${itSize} (${waistCm}cm vita)`;
+            } else {
+                // Women's Italian dress sizes: 38, 40, 42, 44, 46, 48, 50
+                // Conversion: UK 6 = IT 38, UK 8 = IT 40, UK 10 = IT 42, etc.
+                itSize = ukSize + 32;
+                document.getElementById('it-size').textContent = itSize;
+                document.getElementById('it-detail').textContent = `Taglia ${itSize} (${waistCm}cm vita)`;
+            }
+
+            // Japanese Sizing (letter sizes S/M/L/XL or numeric waist in cm)
+            let jpSize, jpNumeric;
+            if (gender === 'male') {
+                // Men's Japanese: S(26-28), M(29-31), L(32-34), XL(35-37), 2XL(38+)
+                if (waistInches <= 28) { jpSize = 'S'; jpNumeric = '26-28'; }
+                else if (waistInches <= 31) { jpSize = 'M'; jpNumeric = '29-31'; }
+                else if (waistInches <= 34) { jpSize = 'L'; jpNumeric = '32-34'; }
+                else if (waistInches <= 37) { jpSize = 'XL'; jpNumeric = '35-37'; }
+                else { jpSize = '2XL'; jpNumeric = '38+'; }
+            } else {
+                // Women's Japanese sizes: 5, 7, 9, 11, 13, 15 (odd numbers)
+                if (waistInches <= 24) { jpSize = '5 (XS)'; jpNumeric = '23-24'; }
+                else if (waistInches <= 26) { jpSize = '7 (S)'; jpNumeric = '25-26'; }
+                else if (waistInches <= 28) { jpSize = '9 (M)'; jpNumeric = '27-28'; }
+                else if (waistInches <= 30) { jpSize = '11 (L)'; jpNumeric = '29-30'; }
+                else { jpSize = '13 (XL)'; jpNumeric = '31+'; }
+            }
+            document.getElementById('jp-size').textContent = jpSize;
+            document.getElementById('jp-detail').textContent = `${jpNumeric}インチ (${waistCm}cm)`;
+
+            // Indian Sizing (uses waist in inches, similar to US but with specific standards)
+            const inSize = Math.round(waistInches / 2) * 2; // Round to nearest even number
+            document.getElementById('in-size').textContent = inSize;
+            document.getElementById('in-detail').textContent = `${inSize}" कमर (${inseamInches}" लंबाई)`;
+
+            // Russian Sizing (uses numeric system based on half chest/waist measurement)
+            let ruSize;
+            if (gender === 'male') {
+                // Men's Russian: 44, 46, 48, 50, 52, 54, 56, 58
+                ruSize = Math.round(waistCm / 2);
+                if (ruSize % 2 !== 0) ruSize += 1;
+                document.getElementById('ru-size').textContent = ruSize;
+                document.getElementById('ru-detail').textContent = `${ruSize} размер (${waistCm}см талия)`;
+            } else {
+                // Women's Russian: 40, 42, 44, 46, 48, 50, 52
+                ruSize = Math.round(waistCm / 2);
+                if (ruSize % 2 !== 0) ruSize += 1;
+                document.getElementById('ru-size').textContent = ruSize;
+                document.getElementById('ru-detail').textContent = `${ruSize} размер (${waistCm}см талия)`;
+            }
+        }
+
+        // Allow Enter key to calculate
+        document.getElementById('height').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateInseam();
+            }
+        });
+
+        document.getElementById('waist-size').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateInseam();
+            }
+        });
+    </script>
+</body>
+</html>
