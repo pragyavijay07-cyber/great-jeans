@@ -1,2 +1,2 @@
-# great-jeans
+# greatjeans
 jeans length calculator 
