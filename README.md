@@ -1,2 +1,0 @@
-# greatjeans
-jeans length calculator 
